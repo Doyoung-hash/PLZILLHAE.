@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎓 대학원생 징검다리 정복기</title>
+<title>🎓 석사 징검다리 정복기</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Segoe UI','Apple SD Gothic Neo',sans-serif;background:#87CEEB;overflow-x:hidden;}
@@ -52,17 +52,16 @@ body{font-family:'Segoe UI','Apple SD Gothic Neo',sans-serif;background:#87CEEB;
   padding:0 6%;pointer-events:none;
 }
 .stone{
-  position:relative;
-  border-radius:50%;
+  position:relative;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  font-size:.6rem;font-weight:700;color:rgba(255,255,255,.85);
+  font-size:.58rem;font-weight:700;color:rgba(255,255,255,.9);
   transition:all .3s;
   box-shadow:0 5px 10px rgba(0,0,0,.4),inset 0 -3px 6px rgba(0,0,0,.25);
 }
 .stone:nth-child(1){width:72px;height:44px;background:radial-gradient(ellipse at 35% 35%,#A0A0A0,#606060);}
 .stone:nth-child(2){width:66px;height:40px;background:radial-gradient(ellipse at 35% 35%,#989898,#585858);margin-bottom:6px;}
 .stone:nth-child(3){width:70px;height:42px;background:radial-gradient(ellipse at 35% 35%,#9A9A9A,#5C5C5C);margin-bottom:2px;}
-.stone:nth-child(4){width:78px;height:48px;background:radial-gradient(ellipse at 35% 35%,#B8C870,#789020);font-size:.9rem;}
+.stone:nth-child(4){width:80px;height:50px;background:radial-gradient(ellipse at 35% 35%,#B8C870,#789020);font-size:.75rem;}
 .stone.current{
   background:radial-gradient(ellipse at 35% 35%,#B8D4A8,#6A9E5A) !important;
   box-shadow:0 4px 20px rgba(100,200,80,.7),inset 0 -3px 6px rgba(0,0,0,.2);
@@ -70,107 +69,70 @@ body{font-family:'Segoe UI','Apple SD Gothic Neo',sans-serif;background:#87CEEB;
 }
 .stone.visited{background:radial-gradient(ellipse at 35% 35%,#D4BC70,#9E8840) !important;}
 @keyframes spulse{0%,100%{box-shadow:0 4px 20px rgba(100,200,80,.7);}50%{box-shadow:0 4px 32px rgba(100,200,80,1),0 0 0 8px rgba(100,200,80,.15);}}
+.stone span{position:relative;z-index:1;text-shadow:0 1px 3px rgba(0,0,0,.5);text-align:center;line-height:1.2;}
 
-/* stone label */
-.stone span{position:relative;z-index:1;text-shadow:0 1px 3px rgba(0,0,0,.5);}
-
-/* ---- CHARACTER WRAP ---- */
+/* ---- STUDENT CHARACTER WRAP ---- */
 .char-wrap{
-  position:absolute;
-  bottom:116px;
+  position:absolute;bottom:116px;
   transition:left .9s cubic-bezier(.25,.46,.45,.94);
-  transform:translateX(-50%);
-  z-index:10;
+  transform:translateX(-50%);z-index:10;
 }
-
-/* ---- CHARACTER ---- */
 .char-body{
-  position:relative;
-  width:56px;height:98px;
+  position:relative;width:56px;height:98px;
   transform-origin:50% 100%;
 }
 
 /* graduation hat */
 .p-hat{
-  display:none;
-  position:absolute;
+  display:none;position:absolute;
   top:-2px;left:50%;transform:translateX(-50%);
-  width:46px;height:8px;
-  background:#111;
-  border-radius:3px;
-  z-index:5;
+  width:46px;height:8px;background:#111;border-radius:3px;z-index:5;
 }
 .p-hat::before{
-  content:'';position:absolute;
-  width:30px;height:16px;
-  background:#111;
-  bottom:8px;left:50%;transform:translateX(-50%);
-  border-radius:4px 4px 0 0;
+  content:'';position:absolute;width:30px;height:16px;background:#111;
+  bottom:8px;left:50%;transform:translateX(-50%);border-radius:4px 4px 0 0;
 }
-.p-hat::after{
-  content:'🟡';font-size:8px;line-height:1;
-  position:absolute;top:-14px;right:4px;
-}
+.p-hat::after{content:'🟡';font-size:8px;line-height:1;position:absolute;top:-14px;right:4px;}
 .outfit-grad .p-hat{display:block;}
 
 /* head */
 .p-head{
-  position:absolute;
-  width:32px;height:32px;border-radius:50%;
+  position:absolute;width:32px;height:32px;border-radius:50%;
   background:#F4A261;border:2px solid #D4824A;
-  top:10px;left:50%;transform:translateX(-50%);
-  z-index:4;
+  top:10px;left:50%;transform:translateX(-50%);z-index:4;
 }
-.p-head::before{ /* eyes */
+.p-head::before{
   content:'';position:absolute;
   width:5px;height:5px;border-radius:50%;background:#2C1810;
-  top:10px;left:6px;
-  box-shadow:10px 0 0 #2C1810;
+  top:10px;left:6px;box-shadow:10px 0 0 #2C1810;
 }
-.p-head::after{ /* mouth */
-  content:'';position:absolute;
-  width:12px;height:6px;
+.p-head::after{
+  content:'';position:absolute;width:12px;height:6px;
   border:2px solid #2C1810;border-top:none;
-  border-radius:0 0 12px 12px;
-  bottom:7px;left:50%;transform:translateX(-50%);
+  border-radius:0 0 12px 12px;bottom:7px;left:50%;transform:translateX(-50%);
 }
 
 /* hoodie hood */
 .p-hood{
-  display:none;
-  position:absolute;
+  display:none;position:absolute;
   top:4px;left:50%;transform:translateX(-50%);
-  width:40px;height:24px;
-  background:#4A5BAD;border-radius:50% 50% 0 0;
-  z-index:3;
+  width:40px;height:24px;background:#4A5BAD;border-radius:50% 50% 0 0;z-index:3;
 }
 .outfit-hoodie .p-hood{display:block;}
 
 /* torso */
 .p-torso{
-  position:absolute;
-  width:36px;height:30px;
-  border-radius:6px 6px 3px 3px;
-  background:#5C6BC0;
-  top:40px;left:50%;transform:translateX(-50%);
-  z-index:3;
-  transition:background .5s;
+  position:absolute;width:36px;height:30px;border-radius:6px 6px 3px 3px;
+  background:#5C6BC0;top:40px;left:50%;transform:translateX(-50%);z-index:3;transition:background .5s;
 }
 .outfit-shirt .p-torso{background:#F0F0F0;}
-.outfit-shirt .p-torso::after{
-  content:'';display:block;
-  width:4px;height:100%;background:#5C9FE8;
-  margin:0 auto;border-radius:2px;
-}
+.outfit-shirt .p-torso::after{content:'';display:block;width:4px;height:100%;background:#5C9FE8;margin:0 auto;border-radius:2px;}
 .outfit-grad .p-torso{background:#1A1A6E;}
 
 /* arms */
 .p-arm-l,.p-arm-r{
-  position:absolute;
-  width:11px;height:26px;border-radius:5px;
-  background:#5C6BC0;top:41px;
-  transition:background .5s;
-  z-index:2;
+  position:absolute;width:11px;height:26px;border-radius:5px;
+  background:#5C6BC0;top:41px;transition:background .5s;z-index:2;
 }
 .p-arm-l{left:2px;transform-origin:top center;animation:al 1.1s ease-in-out infinite alternate;}
 .p-arm-r{right:2px;transform-origin:top center;animation:ar 1.1s ease-in-out infinite alternate;}
@@ -181,11 +143,8 @@ body{font-family:'Segoe UI','Apple SD Gothic Neo',sans-serif;background:#87CEEB;
 
 /* legs */
 .p-leg-l,.p-leg-r{
-  position:absolute;
-  width:13px;height:30px;border-radius:4px 4px 7px 7px;
-  background:#7B8EC8;top:68px;
-  transition:background .5s;
-  z-index:2;
+  position:absolute;width:13px;height:30px;border-radius:4px 4px 7px 7px;
+  background:#7B8EC8;top:68px;transition:background .5s;z-index:2;
 }
 .p-leg-l{left:9px;transform-origin:top center;animation:ll 1.1s ease-in-out infinite alternate;}
 .p-leg-r{right:9px;transform-origin:top center;animation:lr 1.1s ease-in-out infinite alternate;}
@@ -196,11 +155,8 @@ body{font-family:'Segoe UI','Apple SD Gothic Neo',sans-serif;background:#87CEEB;
 
 /* diploma */
 .p-diploma{
-  display:none;
-  position:absolute;
-  right:-18px;top:42px;
-  font-size:18px;
-  animation:dfl 1s ease-in-out infinite alternate;
+  display:none;position:absolute;right:-18px;top:42px;
+  font-size:18px;animation:dfl 1s ease-in-out infinite alternate;
 }
 .outfit-grad .p-diploma{display:block;}
 @keyframes dfl{from{transform:rotate(-10deg)}to{transform:rotate(10deg) translateY(-4px)}}
@@ -213,23 +169,138 @@ body{font-family:'Segoe UI','Apple SD Gothic Neo',sans-serif;background:#87CEEB;
   80% {transform:translateY(-35px) rotate(-580deg);}
   100%{transform:translateY(0) rotate(-720deg);}
 }
-.char-body.flipping{
-  animation:backflip .85s ease-in-out forwards !important;
-}
+.char-body.flipping{animation:backflip .85s ease-in-out forwards !important;}
 .char-body.flipping .p-arm-l,
 .char-body.flipping .p-arm-r,
 .char-body.flipping .p-leg-l,
 .char-body.flipping .p-leg-r{animation:none;}
 
-/* ========== CROWD OVERLAY IN SCENE ========== */
+/* ---- PROFESSOR CHARACTER WRAP ---- */
+.prof-wrap{
+  position:absolute;bottom:116px;
+  transition:left 1.3s cubic-bezier(.25,.46,.45,.94);
+  transform:translateX(-50%);z-index:9;
+}
+.prof-body{
+  position:relative;width:54px;height:96px;
+  transform-origin:50% 100%;
+}
+
+/* professor head */
+.pr-head{
+  position:absolute;width:30px;height:30px;border-radius:50%;
+  background:#EABF96;border:2px solid #C89A72;
+  top:11px;left:50%;transform:translateX(-50%);z-index:4;
+}
+/* glasses */
+.pr-head::before{
+  content:'';position:absolute;
+  width:9px;height:7px;
+  border:1.8px solid #222;border-radius:2px;
+  top:8px;left:2px;
+  box-shadow:10px 0 0 0 #222, 10px 0 0 1.8px #222;
+}
+/* frown */
+.pr-head::after{
+  content:'';position:absolute;width:11px;height:4px;
+  border:1.8px solid #222;border-bottom:none;
+  border-radius:10px 10px 0 0;
+  bottom:5px;left:50%;transform:translateX(-50%);
+}
+
+/* professor suit */
+.pr-torso{
+  position:absolute;width:32px;height:28px;
+  background:#1A237E;border-radius:5px 5px 2px 2px;
+  top:39px;left:50%;transform:translateX(-50%);z-index:3;
+}
+/* red tie */
+.pr-torso::after{
+  content:'';position:absolute;
+  width:5px;height:17px;background:#C62828;
+  left:50%;transform:translateX(-50%);top:2px;border-radius:2px 2px 3px 3px;
+}
+
+/* professor arms */
+.pr-arm-l,.pr-arm-r{
+  position:absolute;width:10px;height:23px;border-radius:5px;
+  background:#1A237E;top:40px;z-index:2;
+}
+.pr-arm-l{left:5px;transform-origin:top center;animation:pral 1.2s ease-in-out infinite alternate;}
+.pr-arm-r{right:5px;transform-origin:top center;animation:prar 1.2s ease-in-out infinite alternate;}
+@keyframes pral{from{transform:rotate(8deg)}to{transform:rotate(-8deg)}}
+@keyframes prar{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}
+
+/* professor legs */
+.pr-leg-l,.pr-leg-r{
+  position:absolute;width:11px;height:27px;border-radius:3px 3px 6px 6px;
+  background:#0D1B6E;top:65px;z-index:2;
+}
+.pr-leg-l{left:10px;transform-origin:top center;animation:prll 1.2s ease-in-out infinite alternate;}
+.pr-leg-r{right:10px;transform-origin:top center;animation:prlr 1.2s ease-in-out infinite alternate;}
+@keyframes prll{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+@keyframes prlr{from{transform:rotate(7deg)}to{transform:rotate(-7deg)}}
+
+/* ---- WHIP ---- */
+.pr-whip{
+  position:absolute;right:0px;top:37px;
+  width:3px;height:26px;
+  background:linear-gradient(#5C2E0A,#9B5B2A);
+  border-radius:2px 2px 1px 1px;
+  transform-origin:top center;
+  transform:rotate(22deg);
+  z-index:6;
+}
+.pr-whip::after{
+  content:'';position:absolute;
+  bottom:-10px;left:-1px;
+  width:2px;height:12px;
+  background:#7A4520;
+  border-radius:0 0 2px 2px;
+  transform:rotate(14deg);
+}
+/* whip crack glow */
+.pr-crack{
+  position:absolute;right:-22px;top:26px;
+  width:22px;height:22px;
+  background:radial-gradient(circle,#FFF176 20%,#FFD700 50%,#FF6600 80%,transparent 100%);
+  border-radius:50%;opacity:0;z-index:15;pointer-events:none;
+}
+
+/* whipping keyframes */
+@keyframes whipArmUp{
+  0%  {transform:rotate(-8deg);}
+  18% {transform:rotate(-120deg);}
+  42% {transform:rotate(-75deg);}
+  68% {transform:rotate(-105deg);}
+  100%{transform:rotate(-8deg);}
+}
+@keyframes whipMotion{
+  0%  {transform:rotate(22deg);}
+  18% {transform:rotate(-95deg);}
+  38% {transform:rotate(65deg);}
+  58% {transform:rotate(-18deg);}
+  78% {transform:rotate(26deg);}
+  100%{transform:rotate(22deg);}
+}
+@keyframes crackFlash{
+  0%  {opacity:0;transform:scale(.3);}
+  28% {opacity:1;transform:scale(1.7);}
+  55% {opacity:.8;transform:scale(1.2);}
+  100%{opacity:0;transform:scale(.5);}
+}
+.prof-wrap.whipping .pr-arm-r{animation:whipArmUp .72s ease-in-out forwards !important;}
+.prof-wrap.whipping .pr-whip{animation:whipMotion .72s ease-in-out forwards;}
+.prof-wrap.whipping .pr-crack{animation:crackFlash .42s ease-out .19s forwards;}
+
+/* ---- SCENE CROWD ---- */
 .scene-crowd{
   position:absolute;bottom:168px;left:0;right:0;
-  height:70px;pointer-events:none;z-index:6;
-  overflow:hidden;
+  height:70px;pointer-events:none;z-index:6;overflow:hidden;
 }
 .sc-person{
   position:absolute;bottom:0;
-  display:flex;flex-direction:column;align-items:center;
+  display:flex;flex-direction:column;align-items:center;gap:1px;
   opacity:0;
 }
 .sc-person.show-left{animation:scL .5s ease-out forwards;}
@@ -237,18 +308,32 @@ body{font-family:'Segoe UI','Apple SD Gothic Neo',sans-serif;background:#87CEEB;
 @keyframes scL{from{transform:translateX(-60px);opacity:0}to{transform:translateX(0);opacity:1}}
 @keyframes scR{from{transform:translateX(60px);opacity:0}to{transform:translateX(0);opacity:1}}
 .sc-h{width:16px;height:16px;border-radius:50%;}
+/* arms row */
+.sc-arms{position:relative;width:26px;height:0;top:-2px;display:flex;justify-content:space-between;}
+.sc-arm{position:absolute;top:0;width:4px;height:11px;border-radius:2px;}
+.sc-arm-l{left:0;transform-origin:top right;animation:scArml .42s ease-in-out infinite alternate;}
+.sc-arm-r{right:0;transform-origin:top left;animation:scArmr .42s ease-in-out infinite alternate;}
+@keyframes scArml{from{transform:rotate(20deg)}to{transform:rotate(-65deg)}}
+@keyframes scArmr{from{transform:rotate(-20deg)}to{transform:rotate(65deg)}}
 .sc-b{width:12px;height:18px;border-radius:3px;margin-top:1px;}
 .sc-legs{display:flex;gap:2px;margin-top:1px;}
-.sc-l{width:5px;height:12px;border-radius:3px;animation:scjump .4s ease-in-out infinite alternate;}
-.sc-person:nth-child(2) .sc-l{animation-delay:.1s}
-.sc-person:nth-child(3) .sc-l{animation-delay:.2s}
+.sc-l{width:5px;height:12px;border-radius:3px;animation:scjump .42s ease-in-out infinite alternate;}
+.sc-person:nth-child(2) .sc-l{animation-delay:.10s}
+.sc-person:nth-child(3) .sc-l{animation-delay:.20s}
 .sc-person:nth-child(4) .sc-l{animation-delay:.15s}
 .sc-person:nth-child(5) .sc-l{animation-delay:.05s}
-@keyframes scjump{from{transform:scaleY(1)}to{transform:scaleY(.65)}}
+.sc-person:nth-child(6) .sc-l{animation-delay:.25s}
+.sc-person:nth-child(7) .sc-l{animation-delay:.08s}
+.sc-person:nth-child(8) .sc-l{animation-delay:.18s}
+@keyframes scjump{from{transform:scaleY(1)}to{transform:scaleY(.6)}}
 .sc-person .sc-h,.sc-person .sc-b{animation:scbounce .45s ease-in-out infinite alternate;}
 @keyframes scbounce{from{transform:translateY(0)}to{transform:translateY(-10px)}}
 .sc-person:nth-child(even) .sc-h,
-.sc-person:nth-child(even) .sc-b{animation-delay:.2s}
+.sc-person:nth-child(even) .sc-b{animation-delay:.22s}
+.sc-person:nth-child(2n) .sc-arm-l,
+.sc-person:nth-child(2n) .sc-arm-r{animation-delay:.22s}
+.sc-person:nth-child(3n) .sc-arm-l,
+.sc-person:nth-child(3n) .sc-arm-r{animation-delay:.11s}
 
 /* ========== CONFETTI ========== */
 #cc{position:fixed;inset:0;pointer-events:none;z-index:9997;}
@@ -259,67 +344,72 @@ body{font-family:'Segoe UI','Apple SD Gothic Neo',sans-serif;background:#87CEEB;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   background:rgba(0,0,0,.72);
   z-index:9999;opacity:0;pointer-events:none;
-  transition:opacity .3s;
-  padding:20px;
+  transition:opacity .3s;padding:20px;
 }
 #cel.show{opacity:1;pointer-events:all;}
 
-.cel-crowd{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;justify-content:center;}
-.cel-cp{font-size:2.4rem;animation:ccb .4s ease-in-out infinite alternate;}
-.cel-cp:nth-child(2){animation-delay:.08s}
-.cel-cp:nth-child(3){animation-delay:.16s}
-.cel-cp:nth-child(4){animation-delay:.24s}
-.cel-cp:nth-child(5){animation-delay:.32s}
-.cel-cp:nth-child(6){animation-delay:.12s}
-.cel-cp:nth-child(7){animation-delay:.2s}
-@keyframes ccb{from{transform:translateY(0) rotate(-6deg)}to{transform:translateY(-16px) rotate(6deg)}}
+/* ---- CEL CROWD CSS FIGURES ---- */
+.cel-crowd{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;justify-content:center;}
+.celf{
+  display:flex;flex-direction:column;align-items:center;gap:1px;
+  animation:celfB .42s ease-in-out infinite alternate;
+}
+.celf:nth-child(2n){animation-delay:.18s;}
+.celf:nth-child(3n){animation-delay:.08s;}
+.celf:nth-child(4n){animation-delay:.26s;}
+.celf:nth-child(5n){animation-delay:.12s;}
+@keyframes celfB{from{transform:translateY(0)}to{transform:translateY(-11px)}}
+.celf-h{width:14px;height:14px;border-radius:50%;}
+.celf-arms-row{position:relative;width:28px;height:0;top:-2px;}
+.celf-al,.celf-ar{
+  position:absolute;top:0;width:5px;height:13px;border-radius:3px;
+}
+.celf-al{left:0;transform-origin:top right;animation:celfAl .42s ease-in-out infinite alternate;}
+.celf-ar{right:0;transform-origin:top left;animation:celfAr .42s ease-in-out infinite alternate;}
+@keyframes celfAl{from{transform:rotate(10deg)}to{transform:rotate(-120deg)}}
+@keyframes celfAr{from{transform:rotate(-10deg)}to{transform:rotate(120deg)}}
+.celf-b{width:12px;height:15px;border-radius:3px;margin-top:1px;}
+.celf-legs{display:flex;gap:2px;margin-top:1px;}
+.celf-lg{width:5px;height:11px;border-radius:3px;}
+.celf:nth-child(2n) .celf-al,
+.celf:nth-child(2n) .celf-ar{animation-delay:.2s}
 
+/* celebration texts */
 .cel-emoji{font-size:5rem;display:block;animation:ceb .4s infinite alternate;}
 @keyframes ceb{from{transform:translateY(0) scale(1)}to{transform:translateY(-18px) scale(1.12)}}
-
 .cel-title{
-  font-size:2.1rem;font-weight:900;
-  margin:12px 0 8px;text-align:center;
-  color:#FFD200;
-  text-shadow:0 0 24px rgba(255,210,0,.9);
-  animation:rb .6s ease;
+  font-size:2.1rem;font-weight:900;margin:12px 0 8px;text-align:center;
+  color:#FFD200;text-shadow:0 0 24px rgba(255,210,0,.9);animation:rb .6s ease;
 }
 @keyframes rb{
   0%{transform:scale(1)}30%{transform:scaleX(1.28) scaleY(.72)}
   40%{transform:scaleX(.72) scaleY(1.28)}60%{transform:scaleX(1.15) scaleY(.85)}100%{transform:scale(1)}
 }
-
 .cel-sub{
   font-size:.97rem;color:#eee;text-align:center;
-  max-width:380px;line-height:1.75;margin-bottom:14px;
-  white-space:pre-line;
+  max-width:380px;line-height:1.75;margin-bottom:14px;white-space:pre-line;
 }
 .cel-badge{
   font-size:.8rem;color:#FFD200;margin-bottom:18px;
-  padding:6px 14px;border:1px solid rgba(255,210,0,.4);
-  border-radius:20px;
+  padding:6px 14px;border:1px solid rgba(255,210,0,.4);border-radius:20px;
 }
 .cel-btn{
   padding:13px 34px;border-radius:50px;border:none;
   background:linear-gradient(135deg,#f7971e,#ffd200);
-  color:#1a1a1a;font-weight:800;font-size:1rem;cursor:pointer;
-  animation:pb 1s infinite;
+  color:#1a1a1a;font-weight:800;font-size:1rem;cursor:pointer;animation:pb 1s infinite;
 }
 @keyframes pb{0%,100%{box-shadow:0 0 0 0 rgba(255,210,0,.5)}50%{box-shadow:0 0 0 16px rgba(255,210,0,0)}}
 .cel-btn:hover{transform:scale(1.05);}
-
 .grad-rainbow{
   background:linear-gradient(90deg,#ff0080,#ff8c00,#ffd200,#00e676,#00b0ff,#aa00ff);
-  background-size:300%;
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-size:300%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
   animation:rbow 1.4s linear infinite;
 }
 @keyframes rbow{0%{background-position:0%}100%{background-position:300%}}
 
 /* ========== STAR PARTICLES ========== */
 .sp{
-  position:fixed;pointer-events:none;z-index:9998;
-  font-size:1.8rem;
+  position:fixed;pointer-events:none;z-index:9998;font-size:1.8rem;
   animation:spfly 1.3s ease-out forwards;
 }
 @keyframes spfly{0%{opacity:1;transform:translate(0,0) scale(1) rotate(0deg)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.15) rotate(720deg)}}
@@ -337,52 +427,38 @@ body.flashing{animation:flash .12s ease 5;}
 
 /* ========== APP LAYOUT ========== */
 #app{min-height:100vh;display:flex;flex-direction:column;align-items:center;}
-
-.app-header{
-  text-align:center;padding:18px 0 0;z-index:2;
-}
-.app-header h1{
-  font-size:1.55rem;font-weight:900;
-  color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.3);
-}
+.app-header{text-align:center;padding:18px 0 0;z-index:2;}
+.app-header h1{font-size:1.55rem;font-weight:900;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.3);}
 .app-header p{font-size:.78rem;color:rgba(255,255,255,.8);margin-top:3px;}
 
 /* ========== TODO SECTION ========== */
-.todo-section{
-  width:100%;max-width:540px;padding:16px 16px 50px;z-index:2;
-}
+.todo-section{width:100%;max-width:540px;padding:16px 16px 50px;z-index:2;}
 .prog-label{
   text-align:center;color:#fff;font-weight:700;font-size:.88rem;
   margin-bottom:10px;text-shadow:0 1px 6px rgba(0,0,0,.3);
 }
 .todo-card{
-  background:rgba(255,255,255,.92);
-  border-radius:20px;padding:22px;
+  background:rgba(255,255,255,.92);border-radius:20px;padding:22px;
   box-shadow:0 8px 32px rgba(0,0,0,.15);
 }
 .irow{display:flex;gap:10px;margin-bottom:16px;}
 .irow input{
   flex:1;padding:10px 14px;border-radius:12px;
   border:1.5px solid #dde;background:#f8f9ff;
-  font-size:.93rem;color:#333;outline:none;
-  transition:border .2s;
+  font-size:.93rem;color:#333;outline:none;transition:border .2s;
 }
 .irow input:focus{border-color:#5C9FE8;}
 .irow input::placeholder{color:#aaa;}
 .irow button{
   padding:10px 18px;border-radius:12px;border:none;
   background:linear-gradient(135deg,#5C9FE8,#3A7FD0);
-  color:#fff;font-weight:700;font-size:.93rem;cursor:pointer;
-  transition:transform .15s;
+  color:#fff;font-weight:700;font-size:.93rem;cursor:pointer;transition:transform .15s;
 }
 .irow button:hover{transform:scale(1.06);}
-
 .tlist{list-style:none;display:flex;flex-direction:column;gap:8px;}
 .titem{
-  display:flex;align-items:center;gap:12px;
-  padding:11px 13px;border-radius:13px;
-  background:#f5f7ff;border:1.5px solid #e0e6ff;
-  cursor:pointer;transition:all .2s;user-select:none;
+  display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:13px;
+  background:#f5f7ff;border:1.5px solid #e0e6ff;cursor:pointer;transition:all .2s;user-select:none;
 }
 .titem:hover{background:#eef0ff;transform:translateX(4px);}
 .titem.done{background:#f0fff4;border-color:#c3e6cb;opacity:.6;cursor:default;}
@@ -394,10 +470,7 @@ body.flashing{animation:flash .12s ease 5;}
 }
 .titem.done .tchk{background:#28a745;border-color:#28a745;color:#fff;box-shadow:0 0 12px rgba(40,167,69,.4);}
 .ttext{flex:1;font-size:.93rem;color:#333;}
-.tdel{
-  background:none;border:none;color:#ccc;font-size:15px;
-  cursor:pointer;padding:2px 6px;border-radius:6px;transition:color .2s;
-}
+.tdel{background:none;border:none;color:#ccc;font-size:15px;cursor:pointer;padding:2px 6px;border-radius:6px;transition:color .2s;}
 .tdel:hover{color:#ff6b6b;}
 .empty-msg{text-align:center;color:#bbb;font-size:.88rem;padding:14px 0;}
 </style>
@@ -406,8 +479,8 @@ body.flashing{animation:flash .12s ease 5;}
 <div id="app">
 
   <div class="app-header">
-    <h1>🎓 대학원생 징검다리 정복기</h1>
-    <p>할일을 완료해서 강을 건너 졸업까지!</p>
+    <h1>🎓 석사 징검다리 정복기</h1>
+    <p>할일을 완료해서 강을 건너 석사 학위까지!</p>
   </div>
 
   <!-- SCENE -->
@@ -415,7 +488,6 @@ body.flashing{animation:flash .12s ease 5;}
     <div class="cloud c1"></div>
     <div class="cloud c2"></div>
     <div class="cloud c3"></div>
-
     <div class="river-shine"></div>
     <div class="ripple rp1"></div>
     <div class="ripple rp2"></div>
@@ -423,13 +495,13 @@ body.flashing{animation:flash .12s ease 5;}
 
     <!-- Stepping Stones -->
     <div class="stones-row">
-      <div class="stone current" id="s0"><span>출발</span></div>
+      <div class="stone current" id="s0"><span>입학</span></div>
       <div class="stone" id="s1"><span>①</span></div>
       <div class="stone" id="s2"><span>②</span></div>
-      <div class="stone" id="s3"><span>🎓</span></div>
+      <div class="stone" id="s3"><span>석사🎓</span></div>
     </div>
 
-    <!-- Character -->
+    <!-- Student Character -->
     <div class="char-wrap outfit-hoodie" id="charWrap">
       <div class="char-body" id="charBody">
         <div class="p-hat"></div>
@@ -444,20 +516,34 @@ body.flashing{animation:flash .12s ease 5;}
       </div>
     </div>
 
+    <!-- Professor Character -->
+    <div class="prof-wrap" id="profWrap">
+      <div class="prof-body" id="profBody">
+        <div class="pr-head"></div>
+        <div class="pr-torso"></div>
+        <div class="pr-arm-l"></div>
+        <div class="pr-arm-r"></div>
+        <div class="pr-whip"></div>
+        <div class="pr-crack"></div>
+        <div class="pr-leg-l"></div>
+        <div class="pr-leg-r"></div>
+      </div>
+    </div>
+
     <!-- Scene crowd -->
     <div class="scene-crowd" id="sceneCrowd"></div>
   </div>
 
   <!-- TODO -->
   <div class="todo-section">
-    <div class="prog-label" id="progLabel">🪨 징검다리를 건너 졸업까지 가보자!</div>
+    <div class="prog-label" id="progLabel">🪨 석사의 길! 징검다리를 건너 졸업까지 가보자!</div>
     <div class="todo-card">
       <div class="irow">
-        <input id="taskInput" type="text" placeholder="할일 입력 (예: 논문 초안 쓰기)" maxlength="80"/>
+        <input id="taskInput" type="text" placeholder="할일 입력 (예: 석사 논문 3장 초안 쓰기)" maxlength="80"/>
         <button onclick="addTask()">추가</button>
       </div>
       <ul class="tlist" id="tlist">
-        <li class="empty-msg">할일을 추가해보세요! ✍️</li>
+        <li class="empty-msg">석사 할일을 추가해보세요! ✍️</li>
       </ul>
     </div>
   </div>
@@ -473,7 +559,7 @@ body.flashing{animation:flash .12s ease 5;}
   <div class="cel-title" id="celTitle">완료!</div>
   <div class="cel-sub" id="celSub"></div>
   <div class="cel-badge" id="celBadge"></div>
-  <button class="cel-btn" onclick="closeCel()">계속 정복하기! 💪</button>
+  <button class="cel-btn" onclick="closeCel()">석사 향해 계속 전진! 💪</button>
 </div>
 
 <script>
@@ -481,8 +567,10 @@ body.flashing{animation:flash .12s ease 5;}
 let tasks = [], completedCount = 0, currentStone = 0;
 let isCelebrating = false, celQueue = [];
 
-// stone left% positions (char-wrap left %)
+// student stone positions (left %)
 const STONE_PCT = [10, 33, 58, 82];
+// professor trailing positions (left %) — starts peeking in from left edge
+const PROF_PCT  = [1, 19, 44, 68];
 
 // ===== AUDIO =====
 let AC;
@@ -498,6 +586,24 @@ function tone(freq, dur, type='triangle', vol=0.3, delay=0) {
   g.gain.linearRampToValueAtTime(vol, ac.currentTime+delay+0.01);
   g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime+delay+dur);
   o.start(ac.currentTime+delay); o.stop(ac.currentTime+delay+dur+0.05);
+}
+
+function playWhipCrack() {
+  try {
+    const ac = getAC();
+    const buf = ac.createBuffer(1, Math.floor(ac.sampleRate * 0.12), ac.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < data.length; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / data.length, 2.5);
+    }
+    const src = ac.createBufferSource();
+    const g = ac.createGain();
+    src.buffer = buf;
+    src.connect(g); g.connect(ac.destination);
+    g.gain.setValueAtTime(0.55, ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.12);
+    src.start();
+  } catch(e){}
 }
 
 function playCrowd() {
@@ -568,7 +674,7 @@ function shakeScreen(hard=false){
   document.body.classList.remove('shaking','flashing');
   void document.body.offsetWidth;
   document.body.classList.add('shaking');
-  if(hard){document.body.classList.add('flashing');}
+  if(hard) document.body.classList.add('flashing');
   setTimeout(()=>document.body.classList.remove('shaking','flashing'),900);
 }
 
@@ -589,6 +695,15 @@ function doFlip(){
   setTimeout(()=>b.classList.remove('flipping'),950);
 }
 
+function doWhip(){
+  const pw=document.getElementById('profWrap');
+  pw.classList.remove('whipping');
+  void pw.offsetWidth;
+  pw.classList.add('whipping');
+  playWhipCrack();
+  setTimeout(()=>pw.classList.remove('whipping'),850);
+}
+
 function moveChar(idx){
   const capped=Math.min(idx,3);
   document.querySelectorAll('.stone').forEach((s,i)=>{
@@ -600,12 +715,17 @@ function moveChar(idx){
   document.getElementById('charWrap').style.left=STONE_PCT[capped]+'%';
 }
 
+function moveProf(idx){
+  const capped=Math.min(idx,3);
+  document.getElementById('profWrap').style.left=PROF_PCT[capped]+'%';
+}
+
 // ===== PROGRESS =====
 const PROG_LABELS=[
-  '🪨 징검다리를 건너 졸업까지 가보자!',
-  '🔥 1개 완료! 셔츠로 갈아입었어요! 이 기세!',
-  '⚡ 2개 완료! 졸업이 눈앞에!! 마지막 한 걸음!',
-  '🎓 완전 클리어!! 강을 건넜다!! 학사모 착용!!',
+  '🪨 석사의 길! 징검다리를 건너 졸업까지 가보자!',
+  '🔥 1개 완료! 셔츠로 갈아입었어요! 석사 기운 상승!',
+  '⚡ 2개 완료! 학위논문이 눈앞에!! 마지막 한 걸음!',
+  '🎓 완전 클리어!! 석사 학위 취득!! 학사모 착용!!',
 ];
 function updateProg(){
   document.getElementById('progLabel').textContent=PROG_LABELS[Math.min(completedCount,3)];
@@ -613,29 +733,30 @@ function updateProg(){
 
 // ===== MESSAGES =====
 const NORMAL_MSGS=[
-  {e:'🔥',t:'실화냐?! 미쳤다!!',s:'지도교수님: "이 친구... 드디어 각성한 것 같은데?"\nㄹㅇ 레전드급 갓생 시작입니다!! 이 기세 유지해요!!'},
-  {e:'⚡',t:'개쩐다!! 핵인싸 등극!!',s:'"야 쟤 오늘 할일 했대" "실화?" "응 ㄹㅇ 실화"\n지도교수님도 덩달아 춤추실 것 같아요. GOAT!'},
-  {e:'🏆',t:'갓생각성!! 레전드!!',s:'미루기 왕에서 완료 왕으로 등극!! 🎊\n지도교수님이 논문 컨펌 눌러주실 기운이 느껴집니다.'},
-  {e:'💥',t:'역대급 생산성 폭발!!',s:'"당신이 해냈다, 살면서 몇 번 못 느끼는 쾌감입니다!"\n오늘 이 순간이 학위논문 완성의 첫 페이지예요!!'},
-  {e:'🌟',t:'논문 쓸 때도 이렇게!!',s:'지도교수님: "요즘 달라진 거 같은데?" ← 당신 얘기\n연구실에서 가장 빛나는 사람이 됐습니다!!'},
-  {e:'🚀',t:'우주급 효율!! GOAT!!',s:'이 속도면 졸업 D-100각이에요.\n지도교수님: "이 친구 드디어 궤도에 올랐구만!!"'},
-  {e:'😤',t:'씹갓생 달성!!',s:'오늘 당신은 완전 주인공입니다 🎬\n지도교수님: "이거... 논문 될 것 같은데요?"'},
-  {e:'🎯',t:'원샷원킬 클리어!!',s:'미루던 걸 해냈어요! 우주의 기운이 당신 편이에요.\n지도교수님 미팅에서 당당하게 보고할 수 있습니다!!'},
-  {e:'👾',t:'버그 없는 인생 플레이!!',s:'에러 없이 완벽 실행!! (논문은 아직 에러 있을 수도...)\n지도교수님이 "수정사항 없음" 도장 찍어줄 기세!!'},
-  {e:'💪',t:'헬스보다 더 힘든 거 해냄!!',s:'논문 쓰는 근육이 비대해지고 있어요!!\n지도교수님: "자네 요즘 눈빛이 다르구만!"'},
+  {e:'🔥',t:'실화냐?! 미쳤다!!',s:'지도교수님: "이 친구... 드디어 각성한 것 같은데?"\n석사 논문 완성이 현실로 다가오고 있어요!! GOAT!!'},
+  {e:'⚡',t:'석사 핵인싸 등극!!',s:'"야 쟤 오늘 할일 했대" "실화?" "응 ㄹㅇ 석사 클라스"\n지도교수님이 미팅 시간 늘려줄 것 같은 기운이에요!!'},
+  {e:'🏆',t:'갓생각성!! 석사 레전드!!',s:'미루기 왕에서 석사 완료 왕으로 등극!! 🎊\n지도교수님: "이번 학기 심사 넣어봐도 되겠어"'},
+  {e:'💥',t:'역대급 석사 생산성 폭발!!',s:'"당신이 해냈다, 살면서 몇 번 못 느끼는 쾌감!"\n오늘 이 순간이 석사 학위논문 완성의 첫 페이지예요!!'},
+  {e:'🌟',t:'석사 논문 쓸 때도 이렇게!!',s:'지도교수님: "요즘 달라진 거 같은데?" ← 당신 얘기\n연구실에서 가장 빛나는 석사 과정생이 됐습니다!!'},
+  {e:'🚀',t:'우주급 효율!! 석사 GOAT!!',s:'이 속도면 석사 졸업 D-100각이에요.\n지도교수님: "이 친구 드디어 논문 궤도에 올랐구만!!"'},
+  {e:'😤',t:'씹갓생 석사 달성!!',s:'오늘 당신은 석사 주인공입니다 🎬\n지도교수님: "이거... 심사위원회 통과할 것 같은데요?"'},
+  {e:'🎯',t:'원샷원킬 석사 클리어!!',s:'미루던 걸 해냈어요! 우주의 기운이 당신 편이에요.\n지도교수님 미팅에서 당당하게 보고할 수 있습니다!!'},
+  {e:'👾',t:'석사 버그 없는 인생 플레이!!',s:'에러 없이 완벽 실행!! (논문 코드는 아직 에러 있을 수도...)\n지도교수님: "수정사항 없음" 도장 찍어줄 기세!!'},
+  {e:'💪',t:'헬스보다 더 힘든 석사 해냄!!',s:'석사 논문 쓰는 근육이 비대해지고 있어요!!\n지도교수님: "자네 요즘 눈빛이 달라졌어. 석사다워!"'},
 ];
 const GRAD_MSGS=[
-  {e:'🎓',t:'졸업이 보인다아아!!!',s:'🎊 3개 완료!! 진짜 레전드입니다!! 🎊\n지도교수님: "자네... 드디어 졸업할 수 있겠어"\n학위수여식 화환 이미 예약해도 돼요!!',g:true},
-  {e:'👨‍🎓',t:'박사가 될 수 있어!!',s:'3개 완료 달성!! 🏆🏆🏆\n이름 앞에 박사 붙이는 날이 얼마 안 남았습니다!!\n지도교수님: "자네 졸업 논문... 사인 해줄게" 😭',g:true},
-  {e:'📜',t:'학위논문 완성 예감!!',s:'🌟 오늘의 3개가 학위의 礎石입니다!! 🌟\n연구실 선배들: "야 쟤 요즘 진짜 달라졌다"\n지도교수님: "이번 학기 졸업 시켜줄게!!" 🎉',g:true},
-  {e:'🥇',t:'갓생 풀콤보 달성!!',s:'3연속 클리어!! 게임으로 치면 퍼펙트 클리어!!\n지도교수님께 "졸업하겠습니다" 메일 보낼 준비 되셨나요?\n당신은 이미 박사입니다 (비공식)',g:true},
+  {e:'🎓',t:'석사 학위가 보인다아아!!!',s:'🎊 3개 완료!! 진짜 레전드입니다!! 🎊\n지도교수님: "자네... 석사 논문 심사 통과하겠어"\n석사 학위수여식 화환 이미 예약해도 돼요!!',g:true},
+  {e:'👨‍🎓',t:'석사 학위 손에 잡힌다!!',s:'3개 완료 달성!! 🏆🏆🏆\n이름 뒤에 석사(M.S.) 붙이는 날이 얼마 안 남았습니다!!\n지도교수님: "자네 논문... 사인 해줄게" 😭',g:true},
+  {e:'📜',t:'석사 학위논문 완성 예감!!',s:'🌟 오늘의 3개가 석사 학위의 礎石입니다!! 🌟\n연구실 선배들: "야 쟤 요즘 진짜 달라졌다. 석사각이야"\n지도교수님: "이번 학기 석사 졸업 시켜줄게!!" 🎉',g:true},
+  {e:'🥇',t:'석사 갓생 풀콤보 달성!!',s:'3연속 클리어!! 게임으로 치면 퍼펙트 클리어!!\n지도교수님께 "석사 졸업하겠습니다" 메일 보낼 준비 됐나요?\n당신은 이미 석사입니다 (비공식)',g:true},
 ];
 
-// ===== CROWD =====
-const SKINS=['#F4C07A','#E89050','#C07040','#8B5E3C','#FDDBA8'];
-const SHIRTS=['#E74C3C','#3498DB','#2ECC71','#9B59B6','#F39C12','#1ABC9C','#E84393'];
-const PANTS=['#2C3E50','#34495E','#1A237E','#4A148C','#1B5E20','#BF360C'];
+// ===== CROWD COLORS =====
+const SKINS =['#F4C07A','#E89050','#C07040','#8B5E3C','#FDDBA8','#E0A87A'];
+const SHIRTS =['#E74C3C','#3498DB','#2ECC71','#9B59B6','#F39C12','#1ABC9C','#E84393','#27AE60','#E67E22'];
+const PANTS  =['#2C3E50','#34495E','#1A237E','#4A148C','#1B5E20','#BF360C','#263238'];
 
+// ===== SCENE CROWD =====
 function spawnSceneCrowd(grad){
   const cont=document.getElementById('sceneCrowd');
   cont.innerHTML='';
@@ -648,18 +769,48 @@ function spawnSceneCrowd(grad){
     const sh=SHIRTS[Math.floor(Math.random()*SHIRTS.length)];
     const pa=PANTS[Math.floor(Math.random()*PANTS.length)];
     div.style.cssText=(fromLeft?`left:${4+i*11}%`:`right:${4+(i-1)*11}%`)+`;animation-delay:${i*.07}s`;
-    div.innerHTML=`<div class="sc-h" style="background:${sk}"></div><div class="sc-b" style="background:${sh}"></div><div class="sc-legs"><div class="sc-l" style="background:${pa}"></div><div class="sc-l" style="background:${pa}"></div></div>`;
+    div.innerHTML=`
+      <div class="sc-h" style="background:${sk}"></div>
+      <div class="sc-arms">
+        <div class="sc-arm sc-arm-l" style="background:${sh}"></div>
+        <div class="sc-arm sc-arm-r" style="background:${sh}"></div>
+      </div>
+      <div class="sc-b" style="background:${sh}"></div>
+      <div class="sc-legs">
+        <div class="sc-l" style="background:${pa}"></div>
+        <div class="sc-l" style="background:${pa}"></div>
+      </div>`;
     cont.appendChild(div);
   }
 }
 function clearSceneCrowd(){document.getElementById('sceneCrowd').innerHTML='';}
 
-// ===== CEL CROWD =====
+// ===== CEL CROWD (CSS figures, no emoji) =====
 function setCelCrowd(grad){
-  const p=grad
-    ?['🙋‍♀️','👨‍🏫','🙌','👏','🎊','🎉','🙋','👨‍🎓','🥳','🎓']
-    :['👏','🙌','🎉','👋','🙋','🥳','🎊'];
-  document.getElementById('celCrowd').innerHTML=p.map(x=>`<span class="cel-cp">${x}</span>`).join('');
+  const cont=document.getElementById('celCrowd');
+  cont.innerHTML='';
+  const n=grad?10:7;
+  for(let i=0;i<n;i++){
+    const sk=SKINS[Math.floor(Math.random()*SKINS.length)];
+    const sh=SHIRTS[Math.floor(Math.random()*SHIRTS.length)];
+    const pa=PANTS[Math.floor(Math.random()*PANTS.length)];
+    const d=(i*0.055).toFixed(2)+'s';
+    const div=document.createElement('div');
+    div.className='celf';
+    div.style.animationDelay=d;
+    div.innerHTML=`
+      <div class="celf-h" style="background:${sk}"></div>
+      <div class="celf-arms-row">
+        <div class="celf-al" style="background:${sh};animation-delay:${d}"></div>
+        <div class="celf-ar" style="background:${sh};animation-delay:${d}"></div>
+      </div>
+      <div class="celf-b" style="background:${sh}"></div>
+      <div class="celf-legs">
+        <div class="celf-lg" style="background:${pa}"></div>
+        <div class="celf-lg" style="background:${pa}"></div>
+      </div>`;
+    cont.appendChild(div);
+  }
 }
 
 // ===== TRIGGER CELEBRATION =====
@@ -668,7 +819,6 @@ function triggerCel(grad){
   spawnStars(grad?40:20, grad);
   launchConfetti(grad?380:180, grad?7500:4500);
   playCrowd();
-  doFlip();
   if(grad) setTimeout(playGradFanfare,180);
   else setTimeout(playJingle,100);
   spawnSceneCrowd(grad);
@@ -682,8 +832,7 @@ function triggerCel(grad){
   if(!m.g) tt.style.color='#FFD200'; else tt.style.color='';
   document.getElementById('celSub').textContent=m.s;
 
-  const badges=['갓생 새싹 🌱','갓생 성장 🌿','갓생 만개 🌸','갓생 열매 🍎','갓생 레전드 🏆','씹갓생 신🌟','갓생 전설 🔱'];
-  const bi=Math.min(Math.floor(completedCount/1),badges.length-1);
+  const badges=['석사 새싹 🌱','석사 성장 🌿','석사 만개 🌸','석사 열매 🍎','석사 레전드 🏆','씹갓생 석사 신🌟','석사 전설 🔱'];
   document.getElementById('celBadge').textContent=`누적 ${completedCount}개 완료 | ${badges[Math.min(completedCount-1,badges.length-1)]}`;
 
   setCelCrowd(grad);
@@ -715,14 +864,22 @@ function toggleTask(id){
   if(!task||task.done) return;
   task.done=true; completedCount++;
   updateOutfit(completedCount);
-
-  // delay move so flip happens first
-  setTimeout(()=>moveChar(completedCount),450);
   updateProg(); render();
 
+  // 1. Professor cracks whip
+  doWhip();
+  // 2. Student reacts and flips
+  setTimeout(()=>doFlip(), 310);
+  // 3. Student moves to next stone
+  setTimeout(()=>moveChar(completedCount), 530);
+  // 4. Professor chases
+  setTimeout(()=>moveProf(completedCount), 1050);
+
   const grad=completedCount%3===0;
-  if(isCelebrating) celQueue.push(grad);
-  else triggerCel(grad);
+  setTimeout(()=>{
+    if(isCelebrating) celQueue.push(grad);
+    else triggerCel(grad);
+  }, 720);
 }
 
 function deleteTask(id){tasks=tasks.filter(t=>t.id!==id);render();}
@@ -731,7 +888,7 @@ function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g
 
 function render(){
   const ul=document.getElementById('tlist');
-  if(!tasks.length){ul.innerHTML='<li class="empty-msg">할일을 추가해보세요! ✍️</li>';return;}
+  if(!tasks.length){ul.innerHTML='<li class="empty-msg">석사 할일을 추가해보세요! ✍️</li>';return;}
   ul.innerHTML='';
   tasks.forEach(t=>{
     const li=document.createElement('li');
@@ -745,9 +902,9 @@ function render(){
 // ===== INIT =====
 document.getElementById('taskInput').addEventListener('keydown',e=>{if(e.key==='Enter')addTask();});
 
-// position char at stone 0
 window.addEventListener('load',()=>{
   document.getElementById('charWrap').style.left=STONE_PCT[0]+'%';
+  document.getElementById('profWrap').style.left=PROF_PCT[0]+'%';
 });
 
 render();
