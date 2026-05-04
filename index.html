@@ -572,6 +572,18 @@ const SUPABASE_KEY = 'sb_publishable_UUyawe9b_jVVVQmsAL36lw_IFpaZJ1u';
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// ===== DEVICE ID (로그인 없는 개인화) =====
+function getDeviceId(){
+  const KEY='ms_device_id';
+  let id=localStorage.getItem(KEY);
+  if(!id){
+    id=crypto.randomUUID();
+    localStorage.setItem(KEY,id);
+  }
+  return id;
+}
+const DEVICE_ID=getDeviceId();
+
 // ===== STATE =====
 let tasks = [], completedCount = 0, currentStone = 0;
 let isCelebrating = false, celQueue = [];
@@ -862,7 +874,7 @@ function closeCel(){
 // ===== TASKS (Supabase) =====
 async function loadTasks(){
   document.getElementById('tlist').innerHTML='<li class="empty-msg">불러오는 중... ⏳</li>';
-  const {data,error}=await db.from('tasks').select('*').order('created_at',{ascending:true});
+  const {data,error}=await db.from('tasks').select('*').eq('user_id',DEVICE_ID).order('created_at',{ascending:true});
   if(error){
     console.error('불러오기 실패:',error);
     document.getElementById('tlist').innerHTML='<li class="empty-msg">불러오기 실패 😢 새로고침 해보세요</li>';
@@ -881,7 +893,7 @@ async function addTask(){
   const inp=document.getElementById('taskInput');
   const t=inp.value.trim(); if(!t){inp.focus();return;}
   inp.value=''; inp.focus();
-  const {data,error}=await db.from('tasks').insert({content:t,is_completed:false}).select().single();
+  const {data,error}=await db.from('tasks').insert({content:t,is_completed:false,user_id:DEVICE_ID}).select().single();
   if(error){console.error('추가 실패:',error);inp.value=t;return;}
   tasks.push({id:data.id,text:data.content,done:data.is_completed});
   render();
