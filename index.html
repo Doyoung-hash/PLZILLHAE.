@@ -474,6 +474,19 @@ body.flashing{animation:flash .12s ease 5;}
 .tdel{background:none;border:none;color:#ccc;font-size:15px;cursor:pointer;padding:2px 6px;border-radius:6px;transition:color .2s;}
 .tdel:hover{color:#ff6b6b;}
 .empty-msg{text-align:center;color:#bbb;font-size:.88rem;padding:14px 0;}
+.reset-wrap{text-align:center;margin-top:14px;}
+.reset-btn{
+  background:none;border:1.5px solid rgba(255,255,255,.45);
+  color:rgba(255,255,255,.75);font-size:.8rem;font-weight:600;
+  padding:7px 20px;border-radius:20px;cursor:pointer;
+  transition:all .2s;letter-spacing:.02em;
+}
+.reset-btn:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.8);color:#fff;}
+.reset-btn.lit{
+  border-color:#FFD200;color:#FFD200;
+  animation:resetPulse 1.8s ease-in-out infinite;
+}
+@keyframes resetPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,210,0,.4)}50%{box-shadow:0 0 0 8px rgba(255,210,0,0)}}
 </style>
 </head>
 <body>
@@ -546,6 +559,9 @@ body.flashing{animation:flash .12s ease 5;}
       <ul class="tlist" id="tlist">
         <li class="empty-msg">석사 할일을 추가해보세요! ✍️</li>
       </ul>
+    </div>
+    <div class="reset-wrap">
+      <button class="reset-btn" id="resetBtn" onclick="resetAll()">🔄 처음부터 다시 시작</button>
     </div>
   </div>
 </div>
@@ -750,6 +766,7 @@ const PROG_LABELS=[
 ];
 function updateProg(){
   document.getElementById('progLabel').textContent=PROG_LABELS[Math.min(completedCount,3)];
+  updateResetBtn();
 }
 
 // ===== MESSAGES =====
@@ -869,6 +886,37 @@ function closeCel(){
     const next=celQueue.shift();
     setTimeout(()=>triggerCel(next),500);
   }
+}
+
+function updateResetBtn(){
+  const btn=document.getElementById('resetBtn');
+  if(completedCount>0&&completedCount%3===0) btn.classList.add('lit');
+  else btn.classList.remove('lit');
+}
+
+async function resetAll(){
+  const msg=completedCount%3===0&&completedCount>0
+    ?`🎓 ${completedCount}개 완료! 새 라운드를 시작할까요?\n(모든 할일이 삭제됩니다)`
+    :'모든 할일을 삭제하고 처음부터 시작할까요?';
+  if(!confirm(msg)) return;
+
+  const {error}=await db.from('tasks').delete().eq('user_id',DEVICE_ID);
+  if(error){console.error('리셋 실패:',error);alert('리셋 중 오류가 발생했어요 😢');return;}
+
+  tasks=[];
+  completedCount=0;
+  currentStone=0;
+  celQueue=[];
+  isCelebrating=false;
+
+  document.getElementById('cel').classList.remove('show');
+  clearSceneCrowd();
+  updateOutfit(0);
+  moveChar(0);
+  moveProf(0);
+  updateProg();
+  updateResetBtn();
+  render();
 }
 
 // ===== TASKS (Supabase) =====
