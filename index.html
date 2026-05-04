@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🎓 석사 징검다리 정복기</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Segoe UI','Apple SD Gothic Neo',sans-serif;background:#87CEEB;overflow-x:hidden;}
@@ -563,6 +564,14 @@ body.flashing{animation:flash .12s ease 5;}
 </div>
 
 <script>
+// ===== SUPABASE =====
+const SUPABASE_URL = 'https://skvoofmxkszclzjwcxzw.supabase.co';
+// ⚠️ 아래 키를 실제 anon key로 교체하세요
+// Supabase 대시보드 → Settings → API → "anon public" 키 (eyJ...로 시작하는 긴 JWT)
+const SUPABASE_KEY = 'sb_publishable_UUyawe9b_jVVVQmsAL36lw_IFpaZJ1u';
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
 // ===== STATE =====
 let tasks = [], completedCount = 0, currentStone = 0;
 let isCelebrating = false, celQueue = [];
@@ -850,29 +859,46 @@ function closeCel(){
   }
 }
 
-// ===== TASKS =====
-function addTask(){
-  const inp=document.getElementById('taskInput');
-  const t=inp.value.trim(); if(!t){inp.focus();return;}
-  tasks.push({id:Date.now(),text:t,done:false});
-  inp.value=''; inp.focus();
+// ===== TASKS (Supabase) =====
+async function loadTasks(){
+  document.getElementById('tlist').innerHTML='<li class="empty-msg">불러오는 중... ⏳</li>';
+  const {data,error}=await db.from('tasks').select('*').order('created_at',{ascending:true});
+  if(error){
+    console.error('불러오기 실패:',error);
+    document.getElementById('tlist').innerHTML='<li class="empty-msg">불러오기 실패 😢 새로고침 해보세요</li>';
+    return;
+  }
+  tasks=(data||[]).map(r=>({id:r.id,text:r.content,done:r.is_completed}));
+  completedCount=tasks.filter(t=>t.done).length;
+  updateOutfit(completedCount);
+  moveChar(completedCount);
+  moveProf(completedCount);
+  updateProg();
   render();
 }
 
-function toggleTask(id){
+async function addTask(){
+  const inp=document.getElementById('taskInput');
+  const t=inp.value.trim(); if(!t){inp.focus();return;}
+  inp.value=''; inp.focus();
+  const {data,error}=await db.from('tasks').insert({content:t,is_completed:false}).select().single();
+  if(error){console.error('추가 실패:',error);inp.value=t;return;}
+  tasks.push({id:data.id,text:data.content,done:data.is_completed});
+  render();
+}
+
+async function toggleTask(id){
   const task=tasks.find(t=>t.id===id);
   if(!task||task.done) return;
+  const {error}=await db.from('tasks').update({is_completed:true}).eq('id',id);
+  if(error){console.error('업데이트 실패:',error);return;}
   task.done=true; completedCount++;
   updateOutfit(completedCount);
   updateProg(); render();
 
-  // 1. Professor cracks whip
   doWhip();
-  // 2. Student reacts and flips
   setTimeout(()=>doFlip(), 310);
-  // 3. Student moves to next stone
   setTimeout(()=>moveChar(completedCount), 530);
-  // 4. Professor chases
   setTimeout(()=>moveProf(completedCount), 1050);
 
   const grad=completedCount%3===0;
@@ -882,7 +908,12 @@ function toggleTask(id){
   }, 720);
 }
 
-function deleteTask(id){tasks=tasks.filter(t=>t.id!==id);render();}
+async function deleteTask(id){
+  const {error}=await db.from('tasks').delete().eq('id',id);
+  if(error){console.error('삭제 실패:',error);return;}
+  tasks=tasks.filter(t=>t.id!==id);
+  render();
+}
 
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
@@ -893,7 +924,8 @@ function render(){
   tasks.forEach(t=>{
     const li=document.createElement('li');
     li.className='titem'+(t.done?' done':'');
-    li.innerHTML=`<div class="tchk">${t.done?'✓':''}</div><span class="ttext">${esc(t.text)}</span><button class="tdel" onclick="event.stopPropagation();deleteTask(${t.id})">✕</button>`;
+    li.innerHTML=`<div class="tchk">${t.done?'✓':''}</div><span class="ttext">${esc(t.text)}</span><button class="tdel">✕</button>`;
+    li.querySelector('.tdel').addEventListener('click',e=>{e.stopPropagation();deleteTask(t.id);});
     if(!t.done) li.addEventListener('click',()=>toggleTask(t.id));
     ul.appendChild(li);
   });
@@ -905,9 +937,8 @@ document.getElementById('taskInput').addEventListener('keydown',e=>{if(e.key==='
 window.addEventListener('load',()=>{
   document.getElementById('charWrap').style.left=STONE_PCT[0]+'%';
   document.getElementById('profWrap').style.left=PROF_PCT[0]+'%';
+  loadTasks();
 });
-
-render();
 </script>
 </body>
 </html>
