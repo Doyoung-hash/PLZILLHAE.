@@ -426,6 +426,91 @@ body.shaking{animation:shk .7s ease;}
 @keyframes flash{0%,100%{filter:brightness(1)}50%{filter:brightness(2.2) saturate(1.8)}}
 body.flashing{animation:flash .12s ease 5;}
 
+/* ========== AUTH SECTION ========== */
+#authSection{
+  width:100%;background:rgba(0,0,0,.18);padding:14px 0;
+  border-bottom:1px solid rgba(255,255,255,.1);
+  text-align:center;
+  transition:all .3s;
+}
+#authSection.hidden{display:none;}
+
+.auth-container{
+  max-width:520px;margin:0 auto;padding:0 16px;
+}
+
+.auth-logged-in{
+  display:none;align-items:center;gap:16px;justify-content:center;
+  font-size:.93rem;color:#fff;
+}
+.auth-logged-in.show{display:flex;}
+.user-email{
+  background:rgba(255,255,255,.12);
+  padding:8px 16px;border-radius:20px;
+  font-weight:600;
+}
+.logout-btn{
+  background:rgba(255,255,255,.25);border:none;
+  color:#fff;padding:8px 18px;border-radius:20px;
+  font-weight:600;font-size:.88rem;cursor:pointer;
+  transition:all .2s;
+}
+.logout-btn:hover{background:rgba(255,255,255,.35);transform:scale(1.05);}
+
+.auth-logged-out{
+  display:flex;flex-direction:column;gap:12px;align-items:center;
+}
+.auth-logged-out.hidden{display:none;}
+
+.auth-email-section{
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;
+}
+.auth-email-input{
+  padding:9px 12px;border-radius:12px;border:1.5px solid rgba(255,255,255,.3);
+  background:rgba(255,255,255,.12);color:#fff;font-size:.88rem;
+  outline:none;transition:all .2s;
+  width:100%;max-width:200px;
+}
+.auth-email-input::placeholder{color:rgba(255,255,255,.6);}
+.auth-email-input:focus{
+  border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.18);
+}
+
+.auth-pass-input{
+  padding:9px 12px;border-radius:12px;border:1.5px solid rgba(255,255,255,.3);
+  background:rgba(255,255,255,.12);color:#fff;font-size:.88rem;
+  outline:none;transition:all .2s;
+  width:100%;max-width:160px;
+}
+.auth-pass-input::placeholder{color:rgba(255,255,255,.6);}
+.auth-pass-input:focus{
+  border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.18);
+}
+
+.auth-button-group{
+  display:flex;gap:8px;justify-content:center;flex-wrap:wrap;
+}
+.auth-btn-login,.auth-btn-signup{
+  padding:9px 20px;border-radius:12px;border:none;font-weight:700;
+  font-size:.88rem;cursor:pointer;transition:all .2s;
+}
+.auth-btn-login{
+  background:linear-gradient(135deg,#5C9FE8,#3A7FD0);color:#fff;
+}
+.auth-btn-login:hover{transform:scale(1.06);}
+.auth-btn-signup{
+  background:rgba(255,255,255,.25);color:#fff;
+}
+.auth-btn-signup:hover{background:rgba(255,255,255,.35);}
+
+.auth-divider{color:rgba(255,255,255,.5);margin:0 8px;font-size:.85rem;}
+
+.auth-status{
+  color:#FFD200;font-size:.85rem;font-weight:600;margin-top:6px;
+  animation:pulse .6s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:.8}50%{opacity:1}}
+
 /* ========== APP LAYOUT ========== */
 #app{min-height:100vh;display:flex;flex-direction:column;align-items:center;}
 .app-header{text-align:center;padding:18px 0 0;z-index:2;}
@@ -434,6 +519,14 @@ body.flashing{animation:flash .12s ease 5;}
 
 /* ========== TODO SECTION ========== */
 .todo-section{width:100%;max-width:540px;padding:16px 16px 50px;z-index:2;}
+.todo-section.hidden{display:none;}
+
+.login-prompt{
+  display:none;text-align:center;padding:60px 30px;
+  color:#fff;font-size:1.1rem;font-weight:600;
+}
+.login-prompt.show{display:block;}
+
 .prog-label{
   text-align:center;color:#fff;font-weight:700;font-size:.88rem;
   margin-bottom:10px;text-shadow:0 1px 6px rgba(0,0,0,.3);
@@ -474,10 +567,59 @@ body.flashing{animation:flash .12s ease 5;}
 .tdel{background:none;border:none;color:#ccc;font-size:15px;cursor:pointer;padding:2px 6px;border-radius:6px;transition:color .2s;}
 .tdel:hover{color:#ff6b6b;}
 .empty-msg{text-align:center;color:#bbb;font-size:.88rem;padding:14px 0;}
+.reset-wrap{text-align:center;margin-top:14px;}
+.reset-btn{
+  background:none;border:1.5px solid rgba(255,255,255,.45);
+  color:rgba(255,255,255,.75);font-size:.8rem;font-weight:600;
+  padding:7px 20px;border-radius:20px;cursor:pointer;
+  transition:all .2s;letter-spacing:.02em;
+}
+.reset-btn:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.8);color:#fff;}
+.reset-btn.lit{
+  border-color:#FFD200;color:#FFD200;
+  animation:resetPulse 1.8s ease-in-out infinite;
+}
+@keyframes resetPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,210,0,.4)}50%{box-shadow:0 0 0 8px rgba(255,210,0,0)}}
 </style>
 </head>
 <body>
 <div id="app">
+
+  <!-- AUTH SECTION -->
+  <div id="authSection">
+    <div class="auth-container">
+      <!-- Logged In State -->
+      <div class="auth-logged-in" id="authLoggedIn">
+        <div class="user-email" id="userEmail"></div>
+        <button class="logout-btn" onclick="logout()">로그아웃</button>
+      </div>
+
+      <!-- Logged Out State -->
+      <div class="auth-logged-out" id="authLoggedOut">
+        <div class="auth-email-section">
+          <input 
+            type="email" 
+            class="auth-email-input" 
+            id="emailInput" 
+            placeholder="이메일"
+            autocomplete="email"
+          />
+          <input 
+            type="password" 
+            class="auth-pass-input" 
+            id="passwordInput" 
+            placeholder="비밀번호"
+            autocomplete="current-password"
+          />
+          <div class="auth-button-group">
+            <button class="auth-btn-login" onclick="signInWithEmail()">로그인</button>
+            <button class="auth-btn-signup" onclick="signUpWithEmail()">이메일로 시작하기</button>
+          </div>
+        </div>
+        <div class="auth-status" id="authStatus"></div>
+      </div>
+    </div>
+  </div>
 
   <div class="app-header">
     <h1>🎓 석사 징검다리 정복기</h1>
@@ -536,7 +678,10 @@ body.flashing{animation:flash .12s ease 5;}
   </div>
 
   <!-- TODO -->
-  <div class="todo-section">
+  <div class="todo-section" id="todoSection">
+    <div class="login-prompt" id="loginPrompt">
+      🔐 로그인 후 징검다리를 건너보세요! 🪨
+    </div>
     <div class="prog-label" id="progLabel">🪨 석사의 길! 징검다리를 건너 졸업까지 가보자!</div>
     <div class="todo-card">
       <div class="irow">
@@ -546,6 +691,9 @@ body.flashing{animation:flash .12s ease 5;}
       <ul class="tlist" id="tlist">
         <li class="empty-msg">석사 할일을 추가해보세요! ✍️</li>
       </ul>
+    </div>
+    <div class="reset-wrap">
+      <button class="reset-btn" id="resetBtn" onclick="resetAll()">🔄 처음부터 다시 시작</button>
     </div>
   </div>
 </div>
@@ -566,27 +714,14 @@ body.flashing{animation:flash .12s ease 5;}
 <script>
 // ===== SUPABASE =====
 const SUPABASE_URL = 'https://skvoofmxkszclzjwcxzw.supabase.co';
-// ⚠️ 아래 키를 실제 anon key로 교체하세요
-// Supabase 대시보드 → Settings → API → "anon public" 키 (eyJ...로 시작하는 긴 JWT)
 const SUPABASE_KEY = 'sb_publishable_UUyawe9b_jVVVQmsAL36lw_IFpaZJ1u';
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ===== DEVICE ID (로그인 없는 개인화) =====
-function getDeviceId(){
-  const KEY='ms_device_id';
-  let id=localStorage.getItem(KEY);
-  if(!id){
-    id=crypto.randomUUID();
-    localStorage.setItem(KEY,id);
-  }
-  return id;
-}
-const DEVICE_ID=getDeviceId();
-
 // ===== STATE =====
 let tasks = [], completedCount = 0, currentStone = 0;
 let isCelebrating = false, celQueue = [];
+let currentUser = null; // 현재 로그인한 사용자
 
 // student stone positions (left %)
 const STONE_PCT = [10, 33, 58, 82];
@@ -750,6 +885,7 @@ const PROG_LABELS=[
 ];
 function updateProg(){
   document.getElementById('progLabel').textContent=PROG_LABELS[Math.min(completedCount,3)];
+  updateResetBtn();
 }
 
 // ===== MESSAGES =====
@@ -871,10 +1007,135 @@ function closeCel(){
   }
 }
 
+function updateResetBtn(){
+  const btn=document.getElementById('resetBtn');
+  if(completedCount>0&&completedCount%3===0) btn.classList.add('lit');
+  else btn.classList.remove('lit');
+}
+
+async function resetAll(){
+  const msg=completedCount%3===0&&completedCount>0
+    ?`🎓 ${completedCount}개 완료! 새 라운드를 시작할까요?\n(모든 할일이 삭제됩니다)`
+    :'모든 할일을 삭제하고 처음부터 시작할까요?';
+  if(!confirm(msg)) return;
+  if(!currentUser) {alert('로그인이 필요합니다');return;}
+
+  const {error}=await db.from('tasks').delete().eq('user_id',currentUser.id);
+  if(error){console.error('리셋 실패:',error);alert('리셋 중 오류가 발생했어요 😢');return;}
+
+  tasks=[];
+  completedCount=0;
+  currentStone=0;
+  celQueue=[];
+  isCelebrating=false;
+
+  document.getElementById('cel').classList.remove('show');
+  clearSceneCrowd();
+  updateOutfit(0);
+  moveChar(0);
+  moveProf(0);
+  updateProg();
+  updateResetBtn();
+  render();
+}
+
+// ===== AUTHENTICATION =====
+function showAuthStatus(msg){
+  const status=document.getElementById('authStatus');
+  status.textContent=msg;
+  setTimeout(()=>{status.textContent='';},3000);
+}
+
+function updateAuthUI(){
+  const loggedInEl=document.getElementById('authLoggedIn');
+  const loggedOutEl=document.getElementById('authLoggedOut');
+  const todoSection=document.getElementById('todoSection');
+  const loginPrompt=document.getElementById('loginPrompt');
+
+  if(currentUser){
+    loggedInEl.classList.add('show');
+    loggedOutEl.classList.add('hidden');
+    document.getElementById('userEmail').textContent=currentUser.email||'사용자';
+    todoSection.classList.remove('hidden');
+    loginPrompt.classList.remove('show');
+    loadTasks();
+  }else{
+    loggedInEl.classList.remove('show');
+    loggedOutEl.classList.remove('hidden');
+    todoSection.classList.add('hidden');
+    loginPrompt.classList.add('show');
+    document.getElementById('emailInput').value='';
+    document.getElementById('passwordInput').value='';
+  }
+}
+
+async function signInWithEmail(){
+  const email=document.getElementById('emailInput').value.trim();
+  const password=document.getElementById('passwordInput').value.trim();
+  if(!email||!password){alert('이메일과 비밀번호를 입력해주세요');return;}
+
+  showAuthStatus('로그인 중...');
+  const {data,error}=await db.auth.signInWithPassword({email,password});
+  if(error){
+    console.error('로그인 실패:',error);
+    showAuthStatus('❌ 로그인 실패');
+    return;
+  }
+  currentUser=data.user;
+  showAuthStatus('✅ 로그인 성공!');
+  updateAuthUI();
+}
+
+async function signUpWithEmail(){
+  const email=document.getElementById('emailInput').value.trim();
+  const password=document.getElementById('passwordInput').value.trim();
+  if(!email||!password){alert('이메일과 비밀번호를 입력해주세요');return;}
+  if(password.length<6){alert('비밀번호는 최소 6자 이상이어야 합니다');return;}
+
+  showAuthStatus('회원가입 중...');
+  const {data,error}=await db.auth.signUp({email,password});
+  if(error){
+    console.error('회원가입 실패:',error);
+    showAuthStatus('❌ 회원가입 실패');
+    return;
+  }
+  showAuthStatus('✅ 회원가입 성공! 로그인했습니다');
+  currentUser=data.user;
+  updateAuthUI();
+}
+
+async function logout(){
+  const {error}=await db.auth.signOut();
+  if(error){console.error('로그아웃 실패:',error);return;}
+  currentUser=null;
+  tasks=[];
+  completedCount=0;
+  currentStone=0;
+  celQueue=[];
+  isCelebrating=false;
+  document.getElementById('cel').classList.remove('show');
+  clearSceneCrowd();
+  updateOutfit(0);
+  moveChar(0);
+  moveProf(0);
+  updateAuthUI();
+}
+
+async function checkAuthState(){
+  const {data:{session}}=await db.auth.getSession();
+  if(session&&session.user){
+    currentUser=session.user;
+    updateAuthUI();
+  }else{
+    updateAuthUI();
+  }
+}
+
 // ===== TASKS (Supabase) =====
 async function loadTasks(){
+  if(!currentUser){updateAuthUI();return;}
   document.getElementById('tlist').innerHTML='<li class="empty-msg">불러오는 중... ⏳</li>';
-  const {data,error}=await db.from('tasks').select('*').eq('user_id',DEVICE_ID).order('created_at',{ascending:true});
+  const {data,error}=await db.from('tasks').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:true});
   if(error){
     console.error('불러오기 실패:',error);
     document.getElementById('tlist').innerHTML='<li class="empty-msg">불러오기 실패 😢 새로고침 해보세요</li>';
@@ -890,10 +1151,11 @@ async function loadTasks(){
 }
 
 async function addTask(){
+  if(!currentUser){alert('로그인이 필요합니다');return;}
   const inp=document.getElementById('taskInput');
   const t=inp.value.trim(); if(!t){inp.focus();return;}
   inp.value=''; inp.focus();
-  const {data,error}=await db.from('tasks').insert({content:t,is_completed:false,user_id:DEVICE_ID}).select().single();
+  const {data,error}=await db.from('tasks').insert({content:t,is_completed:false,user_id:currentUser.id}).select().single();
   if(error){console.error('추가 실패:',error);inp.value=t;return;}
   tasks.push({id:data.id,text:data.content,done:data.is_completed});
   render();
@@ -945,11 +1207,18 @@ function render(){
 
 // ===== INIT =====
 document.getElementById('taskInput').addEventListener('keydown',e=>{if(e.key==='Enter')addTask();});
+document.getElementById('emailInput').addEventListener('keydown',e=>{if(e.key==='Enter')signInWithEmail();});
+document.getElementById('passwordInput').addEventListener('keydown',e=>{if(e.key==='Enter')signInWithEmail();});
 
 window.addEventListener('load',()=>{
   document.getElementById('charWrap').style.left=STONE_PCT[0]+'%';
   document.getElementById('profWrap').style.left=PROF_PCT[0]+'%';
-  loadTasks();
+  checkAuthState();
+});
+
+// 페이지가 보이게 될 때마다 인증 상태 확인
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden) checkAuthState();
 });
 </script>
 </body>
