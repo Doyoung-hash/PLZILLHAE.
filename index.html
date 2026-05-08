@@ -1082,10 +1082,15 @@ async function signInWithEmail(){
   const {data,error}=await db.auth.signInWithPassword({email,password});
   if(error){
     console.error('로그인 실패:',error);
-    showAuthStatus('❌ 로그인 실패');
+    showAuthStatus(`❌ 로그인 실패: ${error.message || error}`);
     return;
   }
-  currentUser=data.user;
+  console.log('로그인 성공 데이터', data);
+  currentUser=data.user || (data.session && data.session.user) || null;
+  if(!currentUser){
+    showAuthStatus('✅ 로그인 성공! 하지만 사용자 정보를 가져오지 못했습니다. 새로고침 후 다시 시도하세요.');
+    return;
+  }
   showAuthStatus('✅ 로그인 성공!');
   updateAuthUI();
 }
@@ -1100,15 +1105,15 @@ async function signUpWithEmail(){
   const {data,error}=await db.auth.signUp({email,password});
   if(error){
     console.error('회원가입 실패:',error);
-    showAuthStatus('❌ 회원가입 실패');
+    showAuthStatus(`❌ 회원가입 실패: ${error.message || error}`);
     return;
   }
+  console.log('회원가입 데이터', data);
 
-  if(data.user){
-    currentUser=data.user;
+  currentUser = data.user || (data.session && data.session.user) || null;
+  if(currentUser){
     showAuthStatus('✅ 회원가입 성공! 자동 로그인되었습니다.');
   } else {
-    currentUser=null;
     showAuthStatus('✅ 회원가입 완료! 로그인해 주세요.');
   }
   updateAuthUI();
