@@ -505,6 +505,9 @@ body.flashing{animation:flash .12s ease 5;}
 
 .auth-divider{color:rgba(255,255,255,.5);margin:0 8px;font-size:.85rem;}
 
+.auth-note{
+  color:rgba(255,255,255,.72);font-size:.82rem;margin-top:10px;
+}
 .auth-status{
   color:#FFD200;font-size:.85rem;font-weight:600;margin-top:6px;
   animation:pulse .6s ease-in-out infinite;
@@ -585,43 +588,8 @@ body.flashing{animation:flash .12s ease 5;}
 <body>
 <div id="app">
 
-  <!-- AUTH SECTION -->
-  <div id="authSection">
-    <div class="auth-container">
-      <!-- Logged In State -->
-      <div class="auth-logged-in" id="authLoggedIn">
-        <div class="user-email" id="userEmail"></div>
-        <button class="logout-btn" onclick="logout()">로그아웃</button>
-      </div>
-
-      <!-- Logged Out State -->
-      <div class="auth-logged-out" id="authLoggedOut">
-        <div class="auth-email-section">
-          <input 
-            type="email" 
-            class="auth-email-input" 
-            id="emailInput" 
-            placeholder="이메일"
-            autocomplete="email"
-          />
-          <input 
-            type="password" 
-            class="auth-pass-input" 
-            id="passwordInput" 
-            placeholder="비밀번호"
-            autocomplete="current-password"
-          />
-          <div class="auth-button-group">
-            <button class="auth-btn-login" onclick="signInWithEmail()">로그인</button>
-            <button class="auth-btn-signup" onclick="signUpWithEmail()">이메일로 시작하기</button>
-          </div>
-        </div>
-        <div class="auth-status" id="authStatus"></div>
-      </div>
-    </div>
-  </div>
-
   <div class="app-header">
+
     <h1>🎓 석사 징검다리 정복기</h1>
     <p>할일을 완료해서 강을 건너 석사 학위까지!</p>
   </div>
@@ -675,6 +643,42 @@ body.flashing{animation:flash .12s ease 5;}
 
     <!-- Scene crowd -->
     <div class="scene-crowd" id="sceneCrowd"></div>
+  </div>
+
+  <!-- AUTH SECTION -->
+  <div id="authSection">
+    <div class="auth-container">
+      <!-- Logged In State -->
+      <div class="auth-logged-in" id="authLoggedIn">
+        <div class="user-email" id="userEmail"></div>
+        <button class="logout-btn" onclick="logout()">로그아웃</button>
+      </div>
+
+      <!-- Logged Out State -->
+      <div class="auth-logged-out" id="authLoggedOut">
+        <div class="auth-email-section">
+          <input 
+            type="email" 
+            class="auth-email-input" 
+            id="emailInput" 
+            placeholder="이메일"
+            autocomplete="email"
+          />
+          <input 
+            type="password" 
+            class="auth-pass-input" 
+            id="passwordInput" 
+            placeholder="비밀번호"
+            autocomplete="current-password"
+          />
+          <div class="auth-button-group">
+            <button class="auth-btn-login" onclick="signInWithEmail()">로그인</button>
+            <button class="auth-btn-signup" onclick="signUpWithEmail()">이메일로 시작하기</button>
+          </div>
+        </div>
+        <div class="auth-status" id="authStatus"></div>
+      </div>
+    </div>
   </div>
 
   <!-- TODO -->
@@ -1099,8 +1103,14 @@ async function signUpWithEmail(){
     showAuthStatus('❌ 회원가입 실패');
     return;
   }
-  showAuthStatus('✅ 회원가입 성공! 로그인했습니다');
-  currentUser=data.user;
+
+  if(data.user){
+    currentUser=data.user;
+    showAuthStatus('✅ 회원가입 성공! 자동 로그인되었습니다.');
+  } else {
+    currentUser=null;
+    showAuthStatus('✅ 회원가입 완료! 로그인해 주세요.');
+  }
   updateAuthUI();
 }
 
