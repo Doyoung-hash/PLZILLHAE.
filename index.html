@@ -1171,7 +1171,7 @@ async function addTask(){
   const t=inp.value.trim(); if(!t){inp.focus();return;}
   inp.value=''; inp.focus();
   const {data,error}=await db.from('tasks').insert({content:t,is_completed:false,user_id:currentUser.id}).select().single();
-  if(error){console.error('추가 실패:',error);inp.value=t;return;}
+  if(error){console.error('추가 실패:',error);alert('할일 추가 실패: '+error.message);inp.value=t;return;}
   tasks.push({id:data.id,text:data.content,done:data.is_completed});
   render();
 }
