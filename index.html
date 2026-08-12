@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🎓 석사 징검다리 정복기</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Segoe UI','Apple SD Gothic Neo',sans-serif;background:#87CEEB;overflow-x:hidden;}
@@ -716,11 +715,55 @@ body.flashing{animation:flash .12s ease 5;}
 </div>
 
 <script>
-// ===== SUPABASE =====
-const SUPABASE_URL = 'https://skvoofmxkszclzjwcxzw.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_UUyawe9b_jVVVQmsAL36lw_IFpaZJ1u';
-const { createClient } = supabase;
-const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+// ===== LOCAL STORAGE AUTH =====
+const STORAGE_KEYS = {
+  USER: 'gradBridgeLocalUser',
+  USERS: 'gradBridgeLocalUsers',
+  TASKS_PREFIX: 'gradBridgeLocalTasks_'
+};
+
+function getLocalUserId(email){
+  return (email || '').trim().toLowerCase();
+}
+
+function getCurrentUserFromStorage(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.USER);
+    return raw ? JSON.parse(raw) : null;
+  } catch (error) {
+    console.error('사용자 로딩 실패:', error);
+    return null;
+  }
+}
+
+function saveCurrentUserToStorage(user){
+  if(!user) {
+    localStorage.removeItem(STORAGE_KEYS.USER);
+    return;
+  }
+  localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+}
+
+function getTaskStorageKey(email){
+  return `${STORAGE_KEYS.TASKS_PREFIX}${getLocalUserId(email)}`;
+}
+
+function readTasksFromStorage(){
+  if(!currentUser) return [];
+  try {
+    const raw = localStorage.getItem(getTaskStorageKey(currentUser.email));
+    const data = raw ? JSON.parse(raw) : [];
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error('할일 불러오기 실패:', error);
+    return [];
+  }
+}
+
+function writeTasksToStorage(taskList){
+  if(!currentUser) return;
+  localStorage.setItem(getTaskStorageKey(currentUser.email), JSON.stringify(taskList));
+}
 
 // ===== STATE =====
 let tasks = [], completedCount = 0, currentStone = 0;
@@ -1073,56 +1116,74 @@ function updateAuthUI(){
   }
 }
 
-async function signInWithEmail(){
+function signInWithEmail(){
   const email=document.getElementById('emailInput').value.trim();
   const password=document.getElementById('passwordInput').value.trim();
   if(!email||!password){alert('이메일과 비밀번호를 입력해주세요');return;}
 
-  showAuthStatus('로그인 중...');
-  const {data,error}=await db.auth.signInWithPassword({email,password});
-  if(error){
-    console.error('로그인 실패:',error);
-    showAuthStatus(`❌ 로그인 실패: ${error.message || error}`);
+  let users = {};
+  try {
+    users = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS) || '{}');
+  } catch (error) {
+    console.error('사용자 저장소 오류:', error);
+  }
+
+  const userId = getLocalUserId(email);
+  const savedUser = users[userId];
+
+  if(!savedUser){
+    showAuthStatus('❌ 등록된 계정이 없습니다. 이메일로 시작하기를 먼저 해주세요.');
     return;
   }
-  console.log('로그인 성공 데이터', data);
-  currentUser=data.user || (data.session && data.session.user) || null;
-  if(!currentUser){
-    showAuthStatus('✅ 로그인 성공! 하지만 사용자 정보를 가져오지 못했습니다. 새로고침 후 다시 시도하세요.');
+
+  if(savedUser.password !== password){
+    showAuthStatus('❌ 이메일 또는 비밀번호가 올바르지 않습니다.');
     return;
   }
+
+  currentUser = { id: savedUser.id, email: savedUser.email };
+  saveCurrentUserToStorage(currentUser);
   showAuthStatus('✅ 로그인 성공!');
   updateAuthUI();
 }
 
-async function signUpWithEmail(){
+function signUpWithEmail(){
   const email=document.getElementById('emailInput').value.trim();
   const password=document.getElementById('passwordInput').value.trim();
   if(!email||!password){alert('이메일과 비밀번호를 입력해주세요');return;}
   if(password.length<6){alert('비밀번호는 최소 6자 이상이어야 합니다');return;}
 
-  showAuthStatus('회원가입 중...');
-  const {data,error}=await db.auth.signUp({email,password});
-  if(error){
-    console.error('회원가입 실패:',error);
-    showAuthStatus(`❌ 회원가입 실패: ${error.message || error}`);
+  let users = {};
+  try {
+    users = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS) || '{}');
+  } catch (error) {
+    console.error('사용자 저장소 오류:', error);
+  }
+
+  const userId = getLocalUserId(email);
+  if(users[userId]){
+    showAuthStatus('⚠️ 이미 등록된 이메일입니다. 로그인해 주세요.');
     return;
   }
-  console.log('회원가입 데이터', data);
 
-  currentUser = data.user || (data.session && data.session.user) || null;
-  if(currentUser){
-    showAuthStatus('✅ 회원가입 성공! 자동 로그인되었습니다.');
-  } else {
-    showAuthStatus('✅ 회원가입 완료! 로그인해 주세요.');
-  }
+  const newUser = {
+    id: typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+    email,
+    password
+  };
+
+  users[userId] = newUser;
+  localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
+
+  currentUser = { id: newUser.id, email: newUser.email };
+  saveCurrentUserToStorage(currentUser);
+  showAuthStatus('✅ 회원가입 성공! 자동 로그인되었습니다.');
   updateAuthUI();
 }
 
-async function logout(){
-  const {error}=await db.auth.signOut();
-  if(error){console.error('로그아웃 실패:',error);return;}
+function logout(){
   currentUser=null;
+  saveCurrentUserToStorage(null);
   tasks=[];
   completedCount=0;
   currentStone=0;
@@ -1136,28 +1197,21 @@ async function logout(){
   updateAuthUI();
 }
 
-async function checkAuthState(){
-  const {data:{session}}=await db.auth.getSession();
-  if(session&&session.user){
-    currentUser=session.user;
-    updateAuthUI();
-  }else{
-    updateAuthUI();
-  }
+function checkAuthState(){
+  currentUser = getCurrentUserFromStorage();
+  updateAuthUI();
 }
 
-// ===== TASKS (Supabase) =====
-async function loadTasks(){
+// ===== TASKS (LOCAL STORAGE) =====
+function loadTasks(){
   if(!currentUser){updateAuthUI();return;}
   document.getElementById('tlist').innerHTML='<li class="empty-msg">불러오는 중... ⏳</li>';
-  const {data,error}=await db.from('tasks').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:true});
-  if(error){
-    console.error('불러오기 실패:',error);
-    document.getElementById('tlist').innerHTML='<li class="empty-msg">불러오기 실패 😢 새로고침 해보세요</li>';
-    return;
-  }
-  tasks=(data||[]).map(r=>({id:r.id,text:r.content,done:r.is_completed}));
-  completedCount=tasks.filter(t=>t.done).length;
+  tasks = readTasksFromStorage().map(item => ({
+    id: item.id || String(Date.now() + Math.random()),
+    text: item.text || '',
+    done: Boolean(item.done)
+  }));
+  completedCount = tasks.filter(t => t.done).length;
   updateOutfit(completedCount);
   moveChar(completedCount);
   moveProf(completedCount);
@@ -1165,23 +1219,30 @@ async function loadTasks(){
   render();
 }
 
-async function addTask(){
+function addTask(){
   if(!currentUser){alert('로그인이 필요합니다');return;}
   const inp=document.getElementById('taskInput');
   const t=inp.value.trim(); if(!t){inp.focus();return;}
   inp.value=''; inp.focus();
-  const {data,error}=await db.from('tasks').insert({content:t,is_completed:false,user_id:currentUser.id}).select().single();
-  if(error){console.error('추가 실패:',error);alert('할일 추가 실패: '+error.message);inp.value=t;return;}
-  tasks.push({id:data.id,text:data.content,done:data.is_completed});
+
+  const newTask = {
+    id: typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()),
+    text: t,
+    done: false
+  };
+
+  tasks.push(newTask);
+  writeTasksToStorage(tasks);
   render();
 }
 
-async function toggleTask(id){
+function toggleTask(id){
   const task=tasks.find(t=>t.id===id);
   if(!task||task.done) return;
-  const {error}=await db.from('tasks').update({is_completed:true}).eq('id',id);
-  if(error){console.error('업데이트 실패:',error);return;}
-  task.done=true; completedCount++;
+
+  task.done = true;
+  completedCount++;
+  writeTasksToStorage(tasks);
   updateOutfit(completedCount);
   updateProg(); render();
 
@@ -1197,10 +1258,9 @@ async function toggleTask(id){
   }, 720);
 }
 
-async function deleteTask(id){
-  const {error}=await db.from('tasks').delete().eq('id',id);
-  if(error){console.error('삭제 실패:',error);return;}
-  tasks=tasks.filter(t=>t.id!==id);
+function deleteTask(id){
+  tasks = tasks.filter(t => t.id !== id);
+  writeTasksToStorage(tasks);
   render();
 }
 
